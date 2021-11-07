@@ -1,6 +1,7 @@
 import gym as gym
 import numpy as np
 from numpy.lib import loadtxt
+import matplotlib.pyplot as plt
 
 env = gym.make('FrozenLake8x8-v1', is_slippery = False)
 

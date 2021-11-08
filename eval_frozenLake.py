@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 env = gym.make('FrozenLake8x8-v1', is_slippery = False)
 
 total_epochs, total_penalities = 0,0
+
 episodes = 100
 q_table = np.loadtxt("fLake.Q.mat")
 

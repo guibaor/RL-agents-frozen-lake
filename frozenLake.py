@@ -25,31 +25,33 @@ for i in range (episodes) :
     done = False
     j=0
     
+    #Sarsa
+    action = np.argmax(Q[state,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
+
     while j < steps:
         
-        """env.render()"""
+        #env.render()
         
         j+=1
         
-        action = np.argmax(Q[state,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
-
-        nextState, reward, done, _ = env.step(action)
-        
         #Q-Learning
-        Q[state,action] = Q[state,action] + alpha *(reward + gma * np.max(Q[nextState,:]) - Q[state,action])
+        # action = np.argmax(Q[state,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
+        # nextState, reward, done, _ = env.step(action)
+        # Q[state,action] = Q[state,action] + alpha *(reward + gma * np.max(Q[nextState,:]) - Q[state,action])
         
         #Sarsa
-         
-        #nextAction = np.argmax(Q[nextState,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
-        #Q[state,action] = Q[state,action] + alpha * (reward + gma * Q[nextState, nextAction] - Q[state,action])
-        
+        nextState, reward, done, _ = env.step(action)  
+        nextAction = np.argmax(Q[nextState,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
+        Q[state,action] = Q[state,action] + alpha * (reward + gma * Q[nextState, nextAction] - Q[state,action])
+        action = nextAction
         
 
         total_rewards += reward
         
         state = nextState
 
-        if (done== True):     
+        if (done== True):
+
             break
 
     score_history.append(total_rewards)

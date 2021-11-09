@@ -17,7 +17,6 @@ episodes = 2000 # Numero de episodios
 score_history=[]
 steps = 99
 
-
 for i in range (episodes) :
     
     state = env.reset()
@@ -26,7 +25,7 @@ for i in range (episodes) :
     j=0
     
     #Sarsa
-    action = np.argmax(Q[state,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
+    # action = np.argmax(Q[state,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
 
     while j < steps:
         
@@ -35,15 +34,15 @@ for i in range (episodes) :
         j+=1
         
         #Q-Learning
-        # action = np.argmax(Q[state,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
-        # nextState, reward, done, _ = env.step(action)
-        # Q[state,action] = Q[state,action] + alpha *(reward + gma * np.max(Q[nextState,:]) - Q[state,action])
+        action = np.argmax(Q[state,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
+        nextState, reward, done, _ = env.step(action)
+        Q[state,action] = Q[state,action] + alpha *(reward + gma * np.max(Q[nextState,:]) - Q[state,action])
         
         #Sarsa
-        nextState, reward, done, _ = env.step(action)  
-        nextAction = np.argmax(Q[nextState,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
-        Q[state,action] = Q[state,action] + alpha * (reward + gma * Q[nextState, nextAction] - Q[state,action])
-        action = nextAction
+        # nextState, reward, done, _ = env.step(action)  
+        # nextAction = np.argmax(Q[nextState,:]+ np.random.randn(1, env.action_space.n)*(1./(i+1)))
+        # Q[state,action] = Q[state,action] + alpha * (reward + gma * Q[nextState, nextAction] - Q[state,action])
+        # action = nextAction
         
 
         total_rewards += reward
@@ -61,10 +60,15 @@ np.savetxt("./fLake.Q.mat",Q)
     
 print ("Rewards over time: " +  str(sum(score_history)/episodes))
 
+
 ## Plot reward over episodes
 rewards_acumulated = np.cumsum(score_history)/episodes
+
 plt.style.use("bmh")
-plt.plot(rewards_acumulated)
+x = np.arange(0.0, episodes, 1.0)
+
+#plt.scatter(x, score_history)
+plt.plot(x,rewards_acumulated)
 plt.ylabel("Rewards")
 plt.xlabel("Number of episodes")
 plt.title("Rewards over episodes")

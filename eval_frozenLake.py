@@ -6,38 +6,49 @@ import matplotlib.pyplot as plt
 env = gym.make('FrozenLake8x8-v1', is_slippery = False)
 
 total_epochs, total_penalities = 0,0
+
 solved_episodes=[]
-failed_episodes=[]
+long_steps=[]
 episodes = 100
 q_table = np.loadtxt("fLake.Q.mat")
 
 
 for _ in range(episodes):
+    
     state = env.reset()
     epochs ,penalties, reward = 0, 0, 0
     step = 0
     done = False
 
     while not done:
-        step += 1
+
         action = np.argmax(q_table[state])
         state, reward, done, info = env.step(action)
 
-        if reward < 0:
+        if reward < 1 and done:
             penalties +=1
-            failed_episodes.append(step)
+            solved_episodes.append(0)
+            long_steps.append(step)
         
         epochs +=1
 
         if done and reward == 1:
-            solved_episodes.append(step)
+            solved_episodes.append(1)
+            long_steps.append(step)
 
+        
+        step += 1
+    
     total_penalities += penalties
     total_epochs += epochs
+    
 
 print(f"Results after {episodes} episodes: ")
-print(f"Number of solved episodes {str(len(solved_episodes))}")
-print(f"Number of times that agent falled on a hole {str(len(failed_episodes))}")
+print(f"Number of solved episodes {str(sum(solved_episodes))}")
+print(f"Number of times that agent falled on a hole: {str(solved_episodes.count(0))}")
 print(f"Average timesteps per episode {total_epochs / episodes}")
 print(f"Average penalties per episode {total_penalities / episodes}")
-
+print(str(solved_episodes))
+print(str(len(long_steps)))
+plt.plot(long_steps)
+plt.show()

@@ -13,11 +13,11 @@ print("Q shape: ", Q.shape)
 
 alpha= .1  # Tasa de aprendizaje (mejor bajita)
 gma = .9    # Factor de descuento de los estados futuros (entre 0 y 1)
-episodes = 4000
+episodes = 2000
 
  # Numero de episodios
 score_history=[]
-steps = 50
+steps = 99
 
 for i in range (episodes) :
     

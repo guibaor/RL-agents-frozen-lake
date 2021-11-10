@@ -3,7 +3,7 @@ import numpy as np
 from numpy.lib import loadtxt
 import matplotlib.pyplot as plt
 
-env = gym.make('FrozenLake8x8-v1', is_slippery = False)
+env = gym.make('FrozenLake8x8-v1', is_slippery = True)
 
 total_epochs, total_penalities = 0,0
 
@@ -50,5 +50,11 @@ print(f"Average timesteps per episode {total_epochs / episodes}")
 print(f"Average penalties per episode {total_penalities / episodes}")
 print(str(solved_episodes))
 print(str(len(long_steps)))
+
+#Plot steps over episodes
+plt.style.use("bmh")
 plt.plot(long_steps)
+plt.title("Length of episodes over time")
+plt.xlabel("Episodes")
+plt.ylabel("Number of steps")
 plt.show()

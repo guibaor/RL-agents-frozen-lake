@@ -1,4 +1,5 @@
 import gym as gym
+from matplotlib.markers import MarkerStyle
 import numpy as np
 from numpy.lib import loadtxt
 import matplotlib.pyplot as plt
@@ -22,6 +23,9 @@ for _ in range(episodes):
 
     while not done:
 
+        #env.render()
+
+        step += 1
         action = np.argmax(q_table[state])
         state, reward, done, info = env.step(action)
 
@@ -37,19 +41,27 @@ for _ in range(episodes):
             long_steps.append(step)
 
         
-        step += 1
-    
+        
     total_penalities += penalties
     total_epochs += epochs
     
 
 print(f"Results after {episodes} episodes: ")
 print(f"Number of solved episodes {str(sum(solved_episodes))}")
-print(f"Number of times that agent falled on a hole: {str(solved_episodes.count(0))}")
+print(f"Number of times that agent fell on a hole: {str(solved_episodes.count(0))}")
 print(f"Average timesteps per episode {total_epochs / episodes}")
 print(f"Average penalties per episode {total_penalities / episodes}")
-print(str(solved_episodes))
-print(str(len(long_steps)))
+
+
+#Plot solved episodes over total episodes
+plt.style.use("bmh")
+plt.scatter(np.arange(0,episodes,1), solved_episodes, 30)
+plt.title("Solved episodes over total episodes")
+plt.xlabel("Episodes")
+plt.ylabel("Solved episodes (1 solved - 0 not solved)")
+plt.show()
+
+
 
 #Plot steps over episodes
 plt.style.use("bmh")

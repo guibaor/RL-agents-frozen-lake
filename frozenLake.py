@@ -3,7 +3,7 @@ import numpy as np
 import random as random
 import matplotlib.pyplot as plt
 
-env = gym.make('FrozenLake8x8-v1', is_slippery = False)
+env = gym.make('FrozenLake8x8-v1', is_slippery = True)
 
 print("|Actions| = ", env.action_space.n)
 print("Observation space: ", env.observation_space.shape)
@@ -13,9 +13,7 @@ print("Q shape: ", Q.shape)
 
 alpha= .1  # Tasa de aprendizaje (mejor bajita)
 gma = .9    # Factor de descuento de los estados futuros (entre 0 y 1)
-episodes = 2000
-
- # Numero de episodios
+episodes = 10000  # Numero de episodios
 score_history=[]
 steps = 99
 
@@ -69,10 +67,14 @@ rewards_acumulated = np.cumsum(score_history)/episodes
 plt.style.use("bmh")
 x = np.arange(0.0, episodes, 1.0)
 
-#plt.scatter(x, score_history)
 plt.plot(x,rewards_acumulated)
 plt.ylabel("Rewards")
 plt.xlabel("Number of episodes")
+plt.title("Rewards over episodes")
+plt.show()
+plt.scatter(x, score_history)
+plt.ylabel("Rewards")
+plt.xlabel("Episode Number")
 plt.title("Rewards over episodes")
 plt.show()
 
